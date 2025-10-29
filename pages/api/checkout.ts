@@ -2,25 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY ?? "";
-const stripe = new Stripe(stripeSecretKey, { apiVersion: "2022-11-15" });
-/**
- * This endpoint creates a Stripe Checkout Session and automatically adds
- * a 3% surcharge to the base amount provided via the `amount` query parameter.
- * Only applies the surcharge to credit card transactions by including it in the
- * checkout amount. Debit cards and other payment methods may not be surcharged,
- * but Stripe will still charge the total amount.
- *
- * Query parameters:
- * - amount: The base amount you wish to receive (in USD, as a decimal).
- * - name: A short description of what the customer is paying for.
- *
- * Environment variables:
- * - NEXT_PUBLIC_SUCCESS_URL: URL to redirect upon successful payment.
- * - NEXT_PUBLIC_CANCEL_URL: URL to redirect if the payment is cancelled.
- * - NEXT_PUBLIC_CURRENCY: (Optional) currency code, defaults to 'usd'.
- *
- * Example: /api/checkout?amount=100.00&name=Donation
- */
+const stripe = new Stripe(stripeSecretKey, {});
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -58,7 +41,8 @@ export default async function handler(
       ],
       mode: "payment",
       success_url:
-        process.env.NEXT_PUBLIC_SUCCESS_URL || `${req.headers.origin}/success`,
+        process.env.NEXT_PUBLIC_SUCCESS_URL ||
+        `${req.headers.origin}/success`,
       cancel_url:
         process.env.NEXT_PUBLIC_CANCEL_URL || `${req.headers.origin}/cancel`,
       payment_intent_data: {
@@ -70,11 +54,18 @@ export default async function handler(
         },
       },
     });
-    return res.status(302).setHeader("Location", session.url || "").end();
+
+    return res
+      .status(302)
+      .setHeader("Location", session.url || "")
+      .end();
   } catch (error: any) {
     console.error("Error creating checkout session", error);
     return res
       .status(500)
-      .json({ error: "Error creating checkout session", details: error.message });
+      .json({
+        error: "Error creating checkout session",
+        details: (error as any).message,
+      });
   }
 }
