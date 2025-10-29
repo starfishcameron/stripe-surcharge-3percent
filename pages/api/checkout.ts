@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY ?? "";
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-10-16",
-});
-
+const stripe = new Stripe(stripeSecretKey);
 /**
  * This endpoint creates a Stripe Checkout Session and automatically adds
  * a 3% surcharge to the base amount provided via the `amount` query parameter.
