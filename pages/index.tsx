@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Home() {
-  const [amount, setAmount] = useState("50.00");
+  const [amount, setAmount] = useState("1.00");
   const [description, setDescription] = useState("Donation");
 
   const handleCheckout = () => {
@@ -14,10 +14,8 @@ export default function Home() {
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>Stripe 3% Surcharge Demo</h1>
+      <h1>GupShop</h1>
       <p>
-        This page demonstrates adding a 3% surcharge to credit card transactions
-        using Stripe Checkout. Enter an amount and description, then click pay.
       </p>
       <div style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}>
         <label>
