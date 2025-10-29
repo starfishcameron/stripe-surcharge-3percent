@@ -49,7 +49,7 @@ export default function Home() {
             cursor: "pointer",
           }}
         >
-          Pay ${amount} (plus 3% fee)
+          Pay ${amount} (plus 7.5% fee)
         </button>
       </div>
     </div>
