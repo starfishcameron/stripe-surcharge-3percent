@@ -19,7 +19,7 @@ export default async function handler(
     return res.status(400).json({ error: "Invalid amount" });
   }
 
-  const surchargePercent = 0.03;
+  const surchargePercent = 0.075;
   const totalAmount = baseAmount * (1 + surchargePercent);
   const unitAmount = Math.round(totalAmount * 100);
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "usd";
